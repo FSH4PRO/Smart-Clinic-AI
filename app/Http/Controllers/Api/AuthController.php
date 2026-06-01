@@ -24,15 +24,22 @@ class AuthController extends BaseController
     {
         try {
             $result = $this->authService->register($request->validated());
+
+            // Eager-load the profile relationship based on role for complete response
+            $user = $result['user'];
+            if ($user->role->value === 'patient') {
+                $user->load('patient');
+            } elseif ($user->role->value === 'doctor') {
+                $user->load('doctor');
+            }
         } catch (WhatsAppServiceException $exception) {
             return $this->errorResponse(null, $exception->getMessage(), 500);
         }
 
         $response = [
-            'user' => new UserResource($result['user']),
+            'user' => new UserResource($user),
             'message' => 'Registration successful. Verify your phone with the OTP sent to your phone.',
         ];
-
 
         if (app()->environment('local')) {
             $response['otp'] = $result['otp'];

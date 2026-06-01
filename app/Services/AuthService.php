@@ -3,7 +3,11 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Patient;
+use App\Models\Doctor;
 use App\Enums\UserRole;
+use App\Enums\PatientGender;
+use App\Enums\BloodType;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -14,10 +18,10 @@ class AuthService
     public function __construct(protected WhatsAppService $whatsAppService) {}
 
     /**
-     * Register a new user, store the OTP, and send the OTP via SMS.
+     * Register a new user, create conditional profile, store the OTP, and send the OTP via SMS.
      *
      * @param  array<string, mixed>  $data
-     * @return array{user: User, otp: string}
+     * @return array{user: User, profile: \Illuminate\Database\Eloquent\Model|null, otp: string}
      */
     public function register(array $data): array
     {
@@ -29,16 +33,71 @@ class AuthService
         }
 
         return DB::transaction(function () use ($data) {
+            // Step 1: Create the user record
             $user = User::create($data);
-            $otp = $this->generateOtp($user);
 
+            // Step 2: Create conditional profile based on role
+            $profile = null;
+            $role = $user->role;
+
+            if ($role === UserRole::PATIENT) {
+                $profile = $this->createPatientProfile($user, $data);
+            } elseif ($role === UserRole::DOCTOR) {
+                $profile = $this->createDoctorProfile($user, $data);
+            }
+
+            // Send verification notification and generate OTP
             $user->sendEmailVerificationNotification();
+            $otp = $this->generateOtp($user);
 
             return [
                 'user' => $user,
+                'profile' => $profile,
                 'otp' => $otp,
             ];
         });
+    }
+
+    /**
+     * Create a patient profile for the registered user.
+     *
+     * @param  \App\Models\User  $user
+     * @param  array<string, mixed>  $data
+     * @return \App\Models\Patient
+     */
+    protected function createPatientProfile(User $user, array $data): Patient
+    {
+        return $user->patient()->create([
+            'date_of_birth' => $data['date_of_birth'] ?? null,
+            'gender' => isset($data['gender']) ? PatientGender::from($data['gender']) : null,
+            'blood_type' => isset($data['blood_type']) ? BloodType::from($data['blood_type']) : null,
+            'national_id' => $data['national_id'] ?? null,
+            'emergency_contact_name' => $data['emergency_contact_name'] ?? null,
+            'emergency_contact_phone' => $data['emergency_contact_phone'] ?? null,
+            'allergies' => $data['allergies'] ?? [],
+            'chronic_conditions' => $data['chronic_conditions'] ?? [],
+        ]);
+    }
+
+    /**
+     * Create a doctor profile for the registered user.
+     *
+     * @param  \App\Models\User  $user
+     * @param  array<string, mixed>  $data
+     * @return \App\Models\Doctor
+     */
+    protected function createDoctorProfile(User $user, array $data): Doctor
+    {
+        return $user->doctor()->create([
+            'specialty' => $data['specialty'] ?? null,
+            'license_number' => $data['license_number'] ?? null,
+            'bio' => $data['bio'] ?? null,
+            'years_experience' => $data['years_experience'] ?? 0,
+            'consultation_fee' => $data['consultation_fee'] ?? 0,
+            'clinic_id' => $data['clinic_id'] ?? null,
+            'branch_id' => $data['branch_id'] ?? null,
+            'ai_summary_enabled' => false,
+        ]);
     }
 
     /**

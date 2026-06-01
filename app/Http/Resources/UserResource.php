@@ -14,16 +14,26 @@ class UserResource extends JsonResource
      */
     public function toArray($request): array
     {
-        return [
+        $data = [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'role' => is_object($this->role) && method_exists($this->role, 'value') ? $this->role->value : $this->role,
+            'role' => $this->role?->value,
             'avatar' => $this->avatar,
             'phone_verified_at' => optional($this->phone_verified_at)?->toISOString(),
+            'email_verified_at' => optional($this->email_verified_at)?->toISOString(),
             'created_at' => optional($this->created_at)?->toISOString(),
             'updated_at' => optional($this->updated_at)?->toISOString(),
         ];
+
+        // Include profile data if relationship is loaded
+        if ($this->relationLoaded('patient') && $this->patient) {
+            $data['profile'] = new PatientResource($this->patient);
+        } elseif ($this->relationLoaded('doctor') && $this->doctor) {
+            $data['profile'] = new DoctorResource($this->doctor);
+        }
+
+        return $data;
     }
 }
