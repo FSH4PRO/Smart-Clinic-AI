@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('invoices', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->foreignId('clinic_id')->constrained('clinics')->onDelete('cascade');
-            $table->foreignId('appointment_id')->nullable()->constrained('appointments')->onDelete('set null');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('patient_id')->constrained('patients')->onDelete('cascade');
+            $table->foreignUuid('clinic_id')->constrained('clinics')->onDelete('cascade');
+            $table->foreignUuid('appointment_id')->nullable()->constrained('appointments')->onDelete('set null');
             $table->decimal('amount', 10, 2);
             $table->string('currency', 5);
             $table->enum('status', ['pending', 'paid', 'refunded', 'failed']);

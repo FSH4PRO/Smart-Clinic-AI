@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use App\Enums\BloodType;
+use App\Enums\PatientGender;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Enums\PatientGender;
-use App\Enums\BloodType;
 
 class Patient extends Model
 {
-    use HasFactory;
+    use HasFactory ,HasUuids ;
 
     protected $fillable = [
         'user_id',

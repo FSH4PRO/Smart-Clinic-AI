@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('appointments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
-            $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
-            $table->foreignId('clinic_id')->constrained('clinics')->onDelete('cascade');
-            $table->foreignId('branch_id')->constrained('clinic_branches')->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('patient_id')->constrained('patients')->onDelete('cascade');
+            $table->foreignUuid('doctor_id')->constrained('doctors')->onDelete('cascade');
+            $table->foreignUuid('clinic_id')->constrained('clinics')->onDelete('cascade');
+            $table->foreignUuid('branch_id')->constrained('clinic_branches')->onDelete('cascade');
             $table->date('appointment_date');
             $table->time('start_time');
             $table->time('end_time');

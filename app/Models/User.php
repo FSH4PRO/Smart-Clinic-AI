@@ -14,12 +14,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\UserRole;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[Fillable(['name', 'email', 'password', 'phone', 'role', 'avatar', 'phone_verified_at', 'last_login_at', 'email_verified_at', 'otp_code', 'otp_expires_at'])]
 #[Hidden(['password', 'remember_token', 'otp_code', 'otp_expires_at'])]
 class User extends Authenticatable implements MustVerifyEmailContract
 {
-    use HasApiTokens, HasFactory, Notifiable, MustVerifyEmail;
+    use HasUlids, HasApiTokens, HasFactory, Notifiable, MustVerifyEmail;
 
     public function clinics(): HasMany
     {

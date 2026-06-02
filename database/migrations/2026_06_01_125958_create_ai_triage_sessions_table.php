@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ai_triage_sessions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('appointment_id')->constrained('appointments')->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('appointment_id')->constrained('appointments')->onDelete('cascade');
             $table->json('messages');
             $table->json('extracted_symptoms');
             $table->json('triage_result');

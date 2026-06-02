@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Enums\InvoiceStatus;
+use App\Enums\PaymentMethod;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Enums\InvoiceStatus;
-use App\Enums\PaymentMethod;
 
 class Invoice extends Model
 {
-    use HasFactory;
+    use HasFactory ,HasUuids;
 
     protected $fillable = [
         'patient_id',

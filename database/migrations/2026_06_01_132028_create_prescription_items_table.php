@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prescription_items', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('prescription_id')->constrained('prescriptions')->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('prescription_id')->constrained('prescriptions')->onDelete('cascade');
             $table->string('drug_name', 120);
             $table->string('dosage', 80);
             $table->string('frequency', 80);

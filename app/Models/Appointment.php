@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use App\Enums\AppointmentStatus;
+use App\Enums\AppointmentType;
+use App\Enums\BookingSource;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Enums\AppointmentType;
-use App\Enums\AppointmentStatus;
-use App\Enums\BookingSource;
 
 class Appointment extends Model
 {
-    use HasFactory;
+    use HasFactory ,HasUuids;
 
     protected $fillable = [
         'patient_id',

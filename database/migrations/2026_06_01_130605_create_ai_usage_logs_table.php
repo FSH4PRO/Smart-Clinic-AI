@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ai_usage_logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('clinic_id')->constrained('clinics')->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('clinic_id')->constrained('clinics')->onDelete('cascade');
             $table->enum('feature', ['triage', 'soap_draft', 'drug_check', 'no_show_pred']);
             $table->string('model', 60);
             $table->integer('input_tokens');

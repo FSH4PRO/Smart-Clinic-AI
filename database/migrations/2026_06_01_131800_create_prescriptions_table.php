@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('prescriptions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('medical_record_id')->constrained('medical_records')->onDelete('cascade');
-            $table->foreignId('pharmacy_id')->constrained('pharmacies')->onDelete('cascade');
-            $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
-            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('medical_record_id')->constrained('medical_records')->onDelete('cascade');
+            $table->foreignUuid('pharmacy_id')->constrained('pharmacies')->onDelete('cascade');
+            $table->foreignUuid('doctor_id')->constrained('doctors')->onDelete('cascade');
+            $table->foreignUuid('patient_id')->constrained('patients')->onDelete('cascade');
             $table->enum('status', ['draft', 'issued', 'dispensed', 'cancelled']);
             $table->timestamp('dispensed_at')->nullable();
             $table->text('notes')->nullable();

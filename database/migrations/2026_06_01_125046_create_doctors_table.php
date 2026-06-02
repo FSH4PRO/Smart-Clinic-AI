@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('doctors', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('clinic_id')->constrained('clinics')->onDelete('cascade');
-            $table->foreignId('branch_id')->constrained('clinic_branches')->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignUuid('clinic_id')->constrained('clinics')->onDelete('cascade');
+            $table->foreignUuid('branch_id')->constrained('clinic_branches')->onDelete('cascade');
             $table->string('specialty', 100);
             $table->text('bio')->nullable();
             $table->decimal('consultation_fee', 10, 2);

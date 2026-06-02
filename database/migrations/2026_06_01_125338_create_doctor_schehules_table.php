@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('doctor_schehules', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('doctor_id')->constrained('doctors')->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('doctor_id')->constrained('doctors')->onDelete('cascade');
             $table->tinyInteger('day_of_week'); // 0=Sun, 6=Sat
             $table->time('start_time');
             $table->time('end_time');
