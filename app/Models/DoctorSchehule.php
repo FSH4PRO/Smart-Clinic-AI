@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DoctorSchehule extends Model
 {
-    use HasFactory ,HasUuids;
+    use HasFactory, HasUuids;
 
     protected $fillable = [
         'doctor_id',
@@ -22,8 +22,9 @@ class DoctorSchehule extends Model
 
     protected $casts = [
         'day_of_week' => 'integer',
-        'start_time' => 'time',
-        'end_time' => 'time',
+        'start_time' => 'date:H:i:s',
+        'end_time' => 'date:H:i:s',
+
         'slot_duration_minutes' => 'integer',
         'is_active' => 'boolean',
     ];

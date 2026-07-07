@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Appointment extends Model
 {
-    use HasFactory ,HasUuids;
+    use HasFactory, HasUuids;
 
     protected $fillable = [
         'patient_id',
@@ -36,8 +37,9 @@ class Appointment extends Model
 
     protected $casts = [
         'appointment_date' => 'date',
-        'start_time' => 'time',
-        'end_time' => 'time',
+        'start_time' => 'string',
+        'end_time' => 'string',
+
         'cancelled_at' => 'datetime',
         'triage_score' => 'integer',
         'no_show_risk' => 'decimal:2',
@@ -66,9 +68,9 @@ class Appointment extends Model
         return $this->belongsTo(ClinicBranch::class, 'branch_id');
     }
 
-    public function aiTriageSession(): HasOne
+    public function aiTriageSessions(): HasMany
     {
-        return $this->hasOne(AiTriageSession::class);
+        return $this->hasMany(AiTriageSession::class);
     }
 
     public function medicalRecord(): HasOne

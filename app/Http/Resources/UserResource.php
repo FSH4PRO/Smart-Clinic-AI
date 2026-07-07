@@ -26,14 +26,13 @@ class UserResource extends JsonResource
             'created_at' => optional($this->created_at)?->toISOString(),
             'updated_at' => optional($this->updated_at)?->toISOString(),
         ];
-
+ 
         // Include profile data if relationship is loaded
-        if ($this->relationLoaded('patient') && $this->patient) {
-            $data['profile'] = new PatientResource($this->patient);
-        } elseif ($this->relationLoaded('doctor') && $this->doctor) {
-            $data['profile'] = new DoctorResource($this->doctor);
-        }
-
+        if ($this->patient !== null) {
+        $data['profile'] = new PatientResource($this->patient);
+    } elseif ($this->doctor !== null) {
+        $data['profile'] = new DoctorResource($this->doctor);
+    }
         return $data;
     }
 }

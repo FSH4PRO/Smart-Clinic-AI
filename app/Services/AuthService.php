@@ -88,17 +88,30 @@ class AuthService
      */
     protected function createDoctorProfile(User $user, array $data): Doctor
     {
+        if (empty($data['clinic_id'])) {
+            throw ValidationException::withMessages([
+                'clinic_id' => ['The clinic_id field is required when registering a doctor.'],
+            ]);
+        }
+
+        if (empty($data['branch_id'])) {
+            throw ValidationException::withMessages([
+                'branch_id' => ['The branch_id field is required when registering a doctor.'],
+            ]);
+        }
+
         return $user->doctor()->create([
             'specialty' => $data['specialty'] ?? null,
             'license_number' => $data['license_number'] ?? null,
             'bio' => $data['bio'] ?? null,
             'years_experience' => $data['years_experience'] ?? 0,
             'consultation_fee' => $data['consultation_fee'] ?? 0,
-            'clinic_id' => $data['clinic_id'] ?? null,
-            'branch_id' => $data['branch_id'] ?? null,
+            'clinic_id' => $data['clinic_id'],
+            'branch_id' => $data['branch_id'],
             'ai_summary_enabled' => false,
         ]);
     }
+
 
     /**
      * Authenticate the user and generate a Sanctum token.

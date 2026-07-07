@@ -27,12 +27,12 @@ class UserFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'phone' => fake()->unique()->numerify('+##############'),
-            'email_verified_at' => now(),
+            'phone' => fake()->unique()->e164PhoneNumber(),
             'password' => static::$password ??= Hash::make('password'),
-            'role' => 'patient',
+            'role' => fake()->randomElement(['super_admin', 'clinic_admin', 'doctor', 'patient', 'pharmacist']),
             'avatar' => null,
-            'remember_token' => Str::random(10),
+            'phone_verified_at' => now(),
+            'email_verified_at' => now(),
         ];
     }
 

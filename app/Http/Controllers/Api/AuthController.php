@@ -97,7 +97,7 @@ class AuthController extends BaseController
     /**
      * Verify the user's email using a signed verification link.
      */
-    public function verifyEmail(Request $request, int $id, string $hash): JsonResponse
+    public function verifyEmail(Request $request, string $id, string $hash): JsonResponse
     {
         $user = User::findOrFail($id);
 

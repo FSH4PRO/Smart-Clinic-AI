@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PrescriptionItem extends Model
 {
-    use HasFactory ,HasUuids;
+    use HasFactory, HasUuids;
+
+    protected $table = 'prescription_items';
+
 
     protected $fillable = [
         'prescription_id',

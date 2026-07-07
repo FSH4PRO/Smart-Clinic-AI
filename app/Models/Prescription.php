@@ -13,6 +13,7 @@ class Prescription extends Model
 {
     use HasFactory, HasUuids;
 
+
     protected $fillable = [
         'medical_record_id',
         'pharmacy_id',
@@ -21,6 +22,7 @@ class Prescription extends Model
         'status',
         'dispensed_at',
         'notes',
+        
     ];
 
     protected $casts = [
@@ -30,26 +32,26 @@ class Prescription extends Model
 
     public function medicalRecord(): BelongsTo
     {
-        return $this->belongsTo(MedicalRecord::class);
+        return $this->belongsTo(MedicalRecord::class ,'medical_record_id');
     }
 
     public function pharmacy(): BelongsTo
     {
-        return $this->belongsTo(Pharmacy::class);
+        return $this->belongsTo(Pharmacy::class ,'pharmacy_id');
     }
 
     public function doctor(): BelongsTo
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsTo(Doctor::class ,'doctor_id');
     }
 
     public function patient(): BelongsTo
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class ,'patient_id');
     }
 
     public function items(): HasMany
     {
-        return $this->hasMany(PrescriptionItem::class);
+        return $this->hasMany(PrescriptionItem::class ,'prescription_id');
     }
 }

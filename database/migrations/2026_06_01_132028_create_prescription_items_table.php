@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('dosage', 80);
             $table->string('frequency', 80);
             $table->tinyInteger('duration_days')->nullable();
-            $table->text('instructions');
-            $table->boolean('ai_interaction_flag');
+            $table->text('instructions')->nullable();
+            $table->boolean('ai_interaction_flag')->default(false);
             $table->text('ai_interaction_detail')->nullable();
             $table->timestamps();
         });

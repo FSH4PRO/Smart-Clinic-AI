@@ -33,4 +33,6 @@ class Pharmacy extends Model
     {
         return $this->hasMany(Prescription::class);
     }
+
+    
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\BranchResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DoctorResource extends JsonResource
@@ -15,6 +16,8 @@ class DoctorResource extends JsonResource
     public function toArray($request): array
     {
         return [
+            'user' => UserResource::make($this->whenLoaded('user')),
+
             'id' => $this->id,
             'user_id' => $this->user_id,
             'clinic_id' => $this->clinic_id,
@@ -27,6 +30,12 @@ class DoctorResource extends JsonResource
             'ai_summary_enabled' => $this->ai_summary_enabled,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
+            
+            'clinic' => ClinicResource::make($this->whenLoaded('clinic')),
+            'branch' => BranchResource::make($this->whenLoaded('branch')),
+            'schedules' => DoctorScheduleResource::collection($this->whenLoaded('schedules')),
+
+
         ];
     }
 }

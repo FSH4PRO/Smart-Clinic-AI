@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \App\Models\MedicalRecord::observe(\App\Modules\AI\Observers\MedicalRecordObserver::class);
+        \App\Models\Prescription::observe(\App\Modules\AI\Observers\PrescriptionObserver::class);
     }
 }

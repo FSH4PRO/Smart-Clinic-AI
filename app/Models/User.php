@@ -24,17 +24,17 @@ class User extends Authenticatable implements MustVerifyEmailContract
 
     public function clinics(): HasMany
     {
-        return $this->hasMany(Clinic::class, 'owner_id');
+        return $this->hasMany(Clinic::class, 'owner_id', 'id');
     }
 
     public function doctor(): HasOne
     {
-        return $this->hasOne(Doctor::class);
+        return $this->hasOne(Doctor::class , 'user_id' , 'id');
     }
 
     public function patient(): HasOne
     {
-        return $this->hasOne(Patient::class);
+        return $this->hasOne(Patient::class, 'user_id', 'id');
     }
 
     public function casts(): array

@@ -49,8 +49,8 @@ class RegisterRequest extends FormRequest
                 'bio' => ['nullable', 'string', 'max:1000'],
                 'years_experience' => ['nullable', 'integer', 'min:0', 'max:60'],
                 'consultation_fee' => ['nullable', 'numeric', 'min:0'],
-                'clinic_id' => ['nullable', 'integer', 'exists:clinics,id'],
-                'branch_id' => ['nullable', 'integer', 'exists:clinic_branches,id'],
+                'clinic_id' => ['required', 'uuid', 'exists:clinics,id'],
+                'branch_id' => ['required', 'uuid', 'exists:clinic_branches,id'],
             ]);
         }
 
