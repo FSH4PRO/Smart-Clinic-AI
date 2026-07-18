@@ -3,7 +3,6 @@
 use App\Http\Controllers\Api\AnalyticsController;
 use App\Modules\Auth\Controllers\LoginViewController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 
 Route::middleware('guest')->group(function () {
@@ -12,9 +11,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth:web'])->group(function () {
-    Route::get('/admin/analytics/overview', [AnalyticsController::class, 'overview'])->name('admin.dashboard');
+    Route::get('/admin/analytics/overview', [AnalyticsController::class, 'overview'])->name('admin.analytics.overview');
+    Route::get('/admin/dashboard', [AnalyticsController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/logout', [LoginViewController::class, 'logout'])->name('logout');
-    Route::get('/', function () {
-        return Inertia::render('Admin/Dashboard');
-    })->name('dashboard');
+    Route::get('/', [AnalyticsController::class, 'dashboard'])->name('dashboard');
 });

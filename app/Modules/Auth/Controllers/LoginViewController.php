@@ -35,7 +35,7 @@ class LoginViewController
 
         $request->session()->regenerate();
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('dashboard');
     }
 
     public function logout(Request $request): RedirectResponse
